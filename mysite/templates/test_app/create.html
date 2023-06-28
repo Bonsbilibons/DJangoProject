@@ -6,15 +6,18 @@
 
    <h1>Create new goods</h1>
 
-   <form action = "{% url 'create'  %}" method="POST">
+   <form action="{% url 'create'  %}" method="POST" enctype="multipart/form-data">
 
-        {% csrf_token %}
+       {% csrf_token %}
 
-       <input type="text" placeholder="Input name" name="name"/><br>
+       <input type="text" placeholder="Input name" name="name" /><br>
        <textarea placeholder="Input description" name="description"></textarea><br>
-       <input type="number" placeholder="Input cost " name="cost"/><br>
-       <input type="text" placeholder="Input status" name="status"/><br>
-       <input type="number" placeholder="Input amount" name="amount"/><br>
+       <input type="number" placeholder="Input cost " name="cost" /><br>
+       <input type="text" placeholder="Input status" name="status" /><br>
+       <input type="number" placeholder="Input amount" name="amount" /><br>
+       <input type="file"
+              name="icon"
+              accept="image/png, image/jpeg"> <br>
 
        <button type="submit">Create Goods</button>
 

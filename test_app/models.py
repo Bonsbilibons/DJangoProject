@@ -8,5 +8,6 @@ class Products(models.Model):
     status = models.CharField("status" , max_length=32)
     date = models.DateField()
     amount = models.PositiveSmallIntegerField("amount")
+    icon = models.ImageField(upload_to='images/') 
     class Meta:
         db_table = 'products' 

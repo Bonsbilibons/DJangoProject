@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+
+{% block title %}datail goods{% endblock %}
+
+{% block content %}
+
+<h1>Datail</h1>
+
+<form >
+
+    {% csrf_token %}
+
+    <h1>{{object.name}} </h1>
+    <h2>{{object.description}} </h2>
+    <h3>{{object.cost}} </h3>
+    <p>{{object.status}} </p>
+    <p>{{object.amount}} </p>
+    <div class="col-md-4">
+        <img src="../media/{{ object.icon}}" />
+    </div>
+</form>
+
+{% endblock %}

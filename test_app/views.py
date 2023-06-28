@@ -4,7 +4,10 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.shortcuts import render , redirect
+from django.core.files.storage import default_storage
 from .models import Products
+from .forms import UploadFileForm
+import uuid
 import json
 
 
@@ -55,8 +58,11 @@ def create(request):
     product.cost = request.POST['cost']
     product.status = request.POST['status']
     product.amount = request.POST['amount']
+    if request.FILES['icon'] != '':
+        product.icon = request.FILES['icon']
     product.save()
     return render(request ,'test_app/create.html'  )
+
 
 def delete(request , id):
     Products.objects.get(id = id).delete()
@@ -77,6 +83,12 @@ def update(request):
     product.cost = request.POST['cost']
     product.status = request.POST['status']
     product.amount = request.POST['amount']
+    if request.FILES['icon'] == '':
+        product.icon = request.FILES['icon']
     product.save()
     return redirect('/test_app/show/')
+
+def detail(request , id):
+    prod = Products.objects.get(id = id)
+    return render(request , 'test_app/datail.html' , {'object' : prod })
 

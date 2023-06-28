@@ -26,15 +26,17 @@
     </style>
 </head>
 <body>
+    <div class="rectangle">
+        <a href="{% url 'creation' %}">Create</a>
+    </div>
+
     {% for elem in object %}
     <div class="rectangle">
         <h1>{{elem.name}} </h1>
         <h2>{{elem.description}} </h2>
-        <h3>{{elem.cost}} </h3>
-        <p>{{elem.status}} </p>
-        <p>{{elem.amount}} </p>
         <div>
             <a href="{% url 'edit' elem.id  %}">Edit</a>
+            <a href="{% url 'detail' elem.id  %}">Detail</a>
             <a href="{% url 'delete' elem.id  %}">Delete</a>
         </div>
     </div>
