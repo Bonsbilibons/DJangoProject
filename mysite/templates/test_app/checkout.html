@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<form action="{% url 'checkout' %}" method="POST">
+    {% csrf_token %}
+    <div class="rectangle yellow">
+        <h3>Purchase N {{purchase.purch_id}}</h3>
+        <input type="hidden" value={{purchase.purch_id}} name="purch_id" /><br>
+        <h3>Include goods:</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Cost</th>
+                <th>Total cost</th>
+            </tr>
+            <tr>
+                <td>{{product.product.name}}</td>
+                <td>{{product.amount}}</td>
+                <td>{{product.product.cost}}</td>
+                <td>{{purchase.total_sum}}</td>
+            </tr>
+        </table>
+        <h3>Total cost: {{purchase.total_sum}}</h3>
+        <button type="submit" class="head red">Confirm </button>
+    </div>
+</form>
+
+
+    {% endblock %}

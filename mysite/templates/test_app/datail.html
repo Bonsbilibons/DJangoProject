@@ -6,18 +6,55 @@
 
 <h1>Datail</h1>
 
-<form >
+<form action="{% url 'cart' %}" method="POST">
 
     {% csrf_token %}
-
-    <h1>{{object.name}} </h1>
-    <h2>{{object.description}} </h2>
-    <h3>{{object.cost}} </h3>
-    <p>{{object.status}} </p>
-    <p>{{object.amount}} </p>
-    <div class="col-md-4">
-        <img src="../media/{{ object.icon}}" />
+    <div class="rectangle yellow">
+        <input type="hidden" value={{object.id}} name="id" /><br>
+        <h1>{{object.name}} </h1>
+        <h2>{{object.description}} </h2>
+        <h3>{{object.cost}}$</h3>
+        {% if object.status == 1 %}
+        <p>Available</p>
+        {% else %}
+        <p>Unavailable</p>
+        {%endif%}
+        <p>{{object.amount}} </p>
+        <p>{{object.created_at}} </p>
+        <p>{{object.updated_at}} </p>
+        <div class="col-md-4">
+            <img src="../../static/upload/{{object.icon}}" width="500" />
+        </div>
+        <div class="head red">
+            <input type="number" placeholder="Input amount" name="amount" /><br>
+            <button type="submit">Buy</button>
+        </div>
     </div>
+</form>
+
+
+<form action="{% url 'leave_comment' object.id %}" method="POST">
+    <div class="rectangle lightblue">
+        {% if user.is_authenticated %}
+        <input type="hidden" value={{object.id}} name="product_id" /><br>
+        <input type="text" placeholder="Input Title" name="title" /><br>
+        <textarea placeholder="Input your opinion" name="comment"></textarea><br>
+        <button type="submit">Leave comment</button>
+        {% else %}
+        <h2>Want to leave comment? Please authorize</h2>
+        <a href="{% url 'login' %}"> Login </a> |
+        {% endif %}
+    </div>
+
+
+    {% for review in reviews %}
+    <div class=" rectangle lightblue">
+        <h1>{{review.author}}</h1>
+        <h2>{{review.title}}</h2>
+        <h3>{{review.comment}}</h3>
+        <p>{{review.created_at}}</p>
+    </div>
+    {% endfor %}
 </form>
 
 {% endblock %}

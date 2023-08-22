@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="rectangle lightblue">
+        <h2>Register</h2>
+        <hr>
+
+        <form action="{% url 'register'%}" method="post">
+            {{form}}
+            {% csrf_token %}
+            <button type="submit">submit</button>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

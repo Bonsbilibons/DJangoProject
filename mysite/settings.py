@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os.path
 from pathlib import Path
+from telnetlib import LOGOUT
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,8 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(__file__)
 
 
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'test_app\\static\\upload\\')
+MEDIA_URL = '/static/upload/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -32,8 +33,20 @@ SECRET_KEY = 'django-insecure-@oa-etw0ttn7dcpq8(6oswam&kh6_%5f1jl81j+232ee17fcjm
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1" , "testserver"]
 
+AUTH_USER_MODEL = 'test_app.USER'
+
+LOGIN_REDIRECT_URL = '/test_app/show/0'
+LOGOUT_REDIRECT_URL = '/test_app/show/0'
+
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ivanbazelian@gmail.com'
+EMAIL_HOST_PASSWORD = 'bvkyicaykoaepmtt'
 
 
 INSTALLED_APPS = [
@@ -128,7 +141,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

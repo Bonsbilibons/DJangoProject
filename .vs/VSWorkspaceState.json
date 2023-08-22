@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\mysite",
+    "\\mysite\\templates",
+    "\\mysite\\templates\\registration",
+    "\\mysite\\templates\\test_app",
+    "\\test_app",
+    "\\test_app\\functions",
+    "\\test_app\\migrations",
+    "\\test_app\\servises"
+  ],
+  "SelectedNode": "\\test_app\\views.py",
+  "PreviewInSolutionExplorer": false
+}

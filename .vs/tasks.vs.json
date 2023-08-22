@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-static",
+      "appliesTo": "test_app/static/",
+      "type": "launch"
+    }
+  ]
+}

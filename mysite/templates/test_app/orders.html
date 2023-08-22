@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+
+{% block title %}Success{% endblock %}
+
+{% block content %}
+    {% for elem in purchases %}
+       <div class="rectangle yellow">
+           <h2>Number of order is : {{elem.purch_id}}</h2>
+           <h3>Time of creation : {{elem.created_at}}</h3>
+           <table>
+               <tr>
+                   <th>Product</th>
+                   <th>Amount</th>
+                   <th>Totul sum</th>
+               </tr>
+               <tr>
+                   <td>{{elem.product.name}}</td>
+                   <td>{{elem.amount}}</td>
+                   <td>{{elem.total_sum}}</td>
+               </tr>
+    </table>
+       </div>
+    {% endfor %}
+{% endblock %}

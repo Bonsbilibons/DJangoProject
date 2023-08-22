@@ -15,8 +15,18 @@
     <input type="text" value={{object.name}} name="name" /><br>
     <textarea name="description">{{object.description}}</textarea><br>
     <input type="number" value={{object.cost}} name="cost" /><br>
-    <input type="text" value={{object.status}} name="status" /><br>
+    <label for="status">Select status:</label>
+    <select name="status">
+        <option value="1">Available</option>
+        <option value="2">Unavailable</option>
+    </select><br>
     <input type="number" value={{object.amount}} name="amount" /><br>
+    <label for="category_id">Select category:</label>
+    <select value={{object.category_id}} name="category_id">
+        <option value="1">Phones</option>
+        <option value="2">Cases</option>
+        <option value="3">Notebooks</option>
+    </select><br />
     <input type="file"
            name="icon"
            accept="image/png, image/jpeg"> <br>

@@ -1,0 +1,28 @@
+﻿{% extends 'base.html'%}
+
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+
+<body>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Count of com.</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        {% for elem in products %}
+        <tr>
+            <td>{{elem.name}}</td>
+            <td>{{elem.category_name}}</td>
+            <td>{{elem.count_of_comments}}</td>
+            <td><a href="{% url 'edit' elem.id  %}">Edit</a></td>
+            <td><a href="{% url 'delete' elem.id  %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+{% endblock %}

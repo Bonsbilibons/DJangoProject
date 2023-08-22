@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+
+{% block title %}Payments datail{% endblock %}
+
+{% block content %}
+<form action="{% url 'stripe' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" value={{purchase.total_sum}} name="purchase" /><br>
+    <input type="hidden" value={{purchase.purch_id}} name="purch_id" /><br>
+    <div class="rectangle yellow">
+        <input type="text" placeholder="Card number" name="number" /><br>
+        <input type="text" placeholder="Year" name="year" /><br>
+        <input type="text" placeholder="Month" name="month" /><br>
+        <input type="text" placeholder="CVV code" name="code" /><br>
+        {% if user.is_authenticated %}
+        <input type="email" value={{user.email}} name="email" /><br>
+        {% else %}
+        <input type="email" placeholder="Input Email" name="email" /><br>
+        {% endif %}
+        <button type="submit" class="head red">Confirm </button>
+    </div>
+</form>
+{% endblock %}
