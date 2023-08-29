@@ -1,4 +1,5 @@
 from asyncio.windows_events import NULL
+from math import fabs
 from re import X
 from telnetlib import AUTHENTICATION
 from unicodedata import category
@@ -23,6 +24,9 @@ import json
 from django.core.mail import send_mail
 
 from .servises.GoodsService import GoodsService
+from .servises.CategoryService import CategoryService
+from .DTO.products.CreateProductDTO import CreateProductDTO
+from .DTO.products.UpdateProductDTO import UpdateProductDTO
 
 
 
@@ -48,52 +52,59 @@ def main(request):
 
 
 def show_goods(request , id):
-    data = GoodsService()
-    return render(request, 'test_app/filter.html' , {'object' : data.get_goods(id) , 'categories' : data.get_all(Categories) })
+    goods_service = GoodsService()
+    category_service = CategoryService()
+    if id == NULL :
+        products = goods_service.get_all()
+    else:
+        products = goods_service.get_goods_by_category_id(id)
+    return render(request, 'test_app/filter.html', {'products': products, 'categories': category_service.get_all(), 'id' : id })
 
 
 def create_product(request):
-    return render(request , 'test_app/create.html'  )
+    categories = CategoryService()
+    return render(request , 'test_app/create.html' , {'categories' : categories.get_all()} )
 
 def create(request):
-    category = Categories.objects.get(id = request.POST['category_id'])
-    product = Products()
-    product.name = request.POST['name']
-    product.description = request.POST['description']
-    product.status = request.POST['status']
-    product.cost = request.POST['cost']
-    product.amount = request.POST['amount']
-    if len(request.FILES) and request.FILES['icon'] != '':
-        product.icon = handle_uploaded_file(request.FILES['icon'])
-    product.category = category
-    product.created_at = str(datetime.datetime.now()).split('.')[0]
-    product.updated_at = str(datetime.datetime.now()).split('.')[0]
-    product.save()
+    goods_service = GoodsService()
+    category = CategoryService()
+    create_product_dto = CreateProductDTO(
+        request.POST['name'], 
+        request.POST['description'],
+        request.POST['status'],
+        request.POST['cost'],
+        request.POST['amount'],
+        request.FILES['icon'] if len(request.FILES) > 0 and request.FILES['icon'] else '',
+        category.get_by_id(request.POST['category_id'])
+    )
+    goods_service.create_goods(create_product_dto)
     return redirect('/test_app/show/0')
 
 def delete(request , id):
     if request.user.is_superuser :
-        Products.objects.get(id = id).delete()
+        product = GoodsService()
+        product.delete_by_id(id)
         return redirect('/test_app/show/0')
 
 def edit(request , id):
     if request.user.is_superuser :
-        prod = Products.objects.get(id = id)
-        return render(request , 'test_app/edit.html' , {'object' : prod } )
+        product = GoodsService()
+        return render(request , 'test_app/edit.html' , {'object' : product.get_by_id(id) } )
 
 def update(request):
     if request.user.is_superuser :
-        product = Products.objects.get(id = request.POST['id'])
-        product.name = request.POST['name']
-        product.description = request.POST['description']
-        product.cost = request.POST['cost']
-        product.status = request.POST['status']
-        product.amount = request.POST['amount']
-        if len(request.FILES) and request.FILES['icon'] != '':
-            product.icon = handle_uploaded_file(request.FILES['icon'])
-        product.category_id = request.POST['category_id']
-        product.updated_at = str(datetime.datetime.now()).split('.')[0]
-        product.save()
+        goods_service = GoodsService()
+        category = CategoryService()
+        update_product_dto = UpdateProductDTO(
+            request.POST['name'], 
+            request.POST['description'],
+            request.POST['status'],
+            request.POST['cost'],
+            request.POST['amount'],
+            request.FILES['icon'] if len(request.FILES) > 0 and request.FILES['icon'] else '',
+            category.get_by_id(request.POST['category_id'])
+        )
+        goods_service.update_goods(request.POST['id'] , update_product_dto)
         return redirect('/test_app/show/0')
 
 def detail(request , id):

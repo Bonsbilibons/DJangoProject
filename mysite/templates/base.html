@@ -70,6 +70,7 @@
 
     </style>
 </head>
+
 <body>
 
     <div class="rectangle yellow">
@@ -99,7 +100,7 @@
 
     <div class="container">
         {% for category in categories %}
-        {% if category.id == object.0.category_id %}
+        {% if category.id == products.0.category_id and id != 0 %}
         <dev class="head lightblue highlighted">
             <a href="{% url 'show' category.id %}">{{category.name}}</a>
         </dev>
@@ -113,4 +114,5 @@
 
     {% block content %}{% endblock %}
 </body>
+
 </html>

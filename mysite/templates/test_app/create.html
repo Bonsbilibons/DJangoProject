@@ -21,9 +21,9 @@
        <input type="number" placeholder="Input amount" name="amount" /><br>
        <label for="category_id">Select category:</label>
        <select name="category_id">
-           <option value="1">Phones</option>
-           <option value="2">Cases</option>
-           <option value="3">Notebooks</option>
+           {% for category in categories %}
+           <option value="{{category.id}}">{{category.name}}</option>
+           {% endfor %}
        </select><br />
        <input type="file"
               name="icon"

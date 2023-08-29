@@ -5,13 +5,13 @@
 {% block content %}
 
 <body>
-    {% for elem in object %}
+    {% for product in products %}
     <div class="rectangle yellow">
-        <h1>{{elem.name}} </h1>
-        <h2>{{elem.description}} </h2>
-        <h2>{{elem.category_name}} </h2>
+        <h1>{{product.name}} </h1>
+        <h2>{{product.description}} </h2>
+        <h2>{{product.category_name}} </h2>
         <div>
-            <a href="{% url 'detail' elem.id  %}">Detail</a>
+            <a href="{% url 'detail' product.id  %}">Detail</a>
         </div>
     </div>
     {% endfor %}
