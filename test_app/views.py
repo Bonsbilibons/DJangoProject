@@ -25,8 +25,10 @@ from django.core.mail import send_mail
 
 from .servises.GoodsService import GoodsService
 from .servises.CategoryService import CategoryService
+from .servises.ReviewsService import ReviewsService
 from .DTO.products.CreateProductDTO import CreateProductDTO
 from .DTO.products.UpdateProductDTO import UpdateProductDTO
+from .DTO.products.LeaveCommentDTO import LeaveCommentDTO
 
 
 
@@ -63,7 +65,7 @@ def show_goods(request , id):
 
 def create_product(request):
     categories = CategoryService()
-    return render(request , 'test_app/create.html' , {'categories' : categories.get_all()} )
+    return render(request, 'test_app/create.html', {'categories' : categories.get_all()} )
 
 def create(request):
     goods_service = GoodsService()
@@ -89,7 +91,7 @@ def delete(request , id):
 def edit(request , id):
     if request.user.is_superuser :
         product = GoodsService()
-        return render(request , 'test_app/edit.html' , {'object' : product.get_by_id(id) } )
+        return render(request, 'test_app/edit.html', {'object' : product.get_by_id(id) } )
 
 def update(request):
     if request.user.is_superuser :
@@ -104,38 +106,30 @@ def update(request):
             request.FILES['icon'] if len(request.FILES) > 0 and request.FILES['icon'] else '',
             category.get_by_id(request.POST['category_id'])
         )
-        goods_service.update_goods(request.POST['id'] , update_product_dto)
+        goods_service.update_goods(request.POST['id'], update_product_dto)
         return redirect('/test_app/show/0')
 
 def detail(request , id):
-    prod = Products.objects.get(id = id)
-    reviews = Reviews.objects.all()
-    json_data = []
-    for review in reviews:
-        json_obj = {
-                'id': review.id, 
-                'author': review.author.username ,
-                'title' : review.title ,
-                'comment': review.comment,
-                'created_at': review.created_at,
-                'product' : prod.id
-            }
-        if json_obj['product'] == id:
-            json_data.append(json_obj)
-    return render(request , 'test_app/datail.html' , {'object' : prod  , 'reviews' : json_data})
+    product = GoodsService()
+    reviews = ReviewsService()
+    return render(request, 'test_app/datail.html', {'object': product.get_by_id(id)  , 'reviews': reviews.filter_by_product_id(id)})
 
 def leave_comment(request , id ):
-    prod = Products.objects.get(id = id)
-    review = Reviews()
-    review.title = request.POST['title']
-    review.comment = request.POST['comment']
-    review.created_at = str(datetime.datetime.now()).split('.')[0]
-    review.product = prod
-    review.author = request.user
-    review.save()
+    product = GoodsService()
+    review = ReviewsService()
+    leave_comment_dto = LeaveCommentDTO(
+        request.user,
+        request.POST['title'],
+        request.POST['comment'],
+        product.get_by_id(id)
+    )
+    review.leave_comment(leave_comment_dto)
     return redirect('/test_app/show/detail/' + str(id))
 
-
+def delete_comment(request , id):
+    review = ReviewsService()
+    review.delete_by_id(request.POST['review_id'])
+    return redirect('/test_app/show/detail/' + str(id))
 
 class Register(View):
     template_name = 'registration/register.html'

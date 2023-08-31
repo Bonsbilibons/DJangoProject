@@ -32,8 +32,8 @@
     </div>
 </form>
 
-
 <form action="{% url 'leave_comment' object.id %}" method="POST">
+    {% csrf_token %}
     <div class="rectangle lightblue">
         {% if user.is_authenticated %}
         <input type="hidden" value={{object.id}} name="product_id" /><br>
@@ -45,16 +45,22 @@
         <a href="{% url 'login' %}"> Login </a> |
         {% endif %}
     </div>
+</form>
 
-
-    {% for review in reviews %}
+{% for review in reviews %}
+<form action="{% url 'delete_comment' review.product.id %}" method="POST">
+    {% csrf_token %}
     <div class=" rectangle lightblue">
         <h1>{{review.author}}</h1>
         <h2>{{review.title}}</h2>
         <h3>{{review.comment}}</h3>
         <p>{{review.created_at}}</p>
+        {% if user.is_authenticated and user.is_superuser %}
+        <input type="hidden" value={{review.id}} name="review_id" /><br>
+        <button type="submit">Delete comment</button>
+        {% endif %}
     </div>
-    {% endfor %}
 </form>
 
+{% endfor %}
 {% endblock %}
